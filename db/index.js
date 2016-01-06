@@ -3,7 +3,7 @@ import {
     CustomerSchema,
     PersonSchema,
     AddressSchema
-} from './entities';
+} from './schemas';
 import dbConfiguration from './db.json';
 import createMockData from './mock-data';
 

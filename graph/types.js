@@ -8,7 +8,7 @@ import {
     listOf
 } from './helpers';
 
-export const AddressType = typeFrom(AddressEntity);
+export const AddressType = typeFrom(AddressEntity, ['customerId', 'personId']);
 
 export const PersonType = typeFrom(
     PersonEntity,
