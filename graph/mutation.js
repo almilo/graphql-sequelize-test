@@ -45,11 +45,10 @@ function createCustomerWithAddress() {
     );
 
     operation.resolve = (_, args) => {
-        return CustomerEntity.create(args).then(customer => {
-            return AddressEntity.create(args).then(address => {
-                return customer.setAddress(address).then(_ => customer);
-            });
-        });
+        return Promise.all([
+            CustomerEntity.create(args),
+            AddressEntity.create(args)
+        ]).then(([customer, address]) => customer.setAddress(address).then(_ => customer));
     };
 
     return operation;
