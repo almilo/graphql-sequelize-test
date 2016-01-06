@@ -1,0 +1,9 @@
+{
+  "userName": "lims",
+  "password": "lims",
+  "dbName": "lims",
+  "driverConfiguration": {
+    "dialect": "postgres",
+    "host": "localhost"
+  }
+}

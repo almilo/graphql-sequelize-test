@@ -1,11 +1,11 @@
 import Sequelize from 'sequelize';
 
-export const stringField = (required = false) => ({
+export const text = (required = false) => ({
     type: Sequelize.STRING,
     allowNull: !required
 });
 
-export const emailField = (required = false) => ({
+export const email = (required = false) => ({
     type: Sequelize.STRING,
     allowNull: !required,
     validate: {

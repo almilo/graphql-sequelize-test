@@ -8,10 +8,16 @@
     "start": "babel-node index.js",
     "dev": "nodemon --exec babel-node index.js"
   },
-  "dependencies": {
+  "devDependencies": {
     "babel-cli": "^6.3.17",
-    "babel-preset-node5": "^10.1.2",
+    "babel-preset-node5": "^10.1.2"
+  },
+  "dependencies": {
+    "express": "^4.13.3",
+    "express-graphql": "^0.4.5",
     "faker": "^3.0.1",
+    "graphql": "^0.4.14",
+    "graphql-sequelize": "^0.16.2",
     "lodash": "^3.10.1",
     "pg": "^4.4.3",
     "pg-hstore": "^2.3.2",

@@ -1,36 +1,27 @@
 import _ from 'lodash';
 import Faker from 'faker';
-import {Person} from './person';
-import {Address} from './address';
-import {Customer} from './customer';
+import {
+    PersonEntity,
+    AddressEntity,
+    CustomerEntity
+} from './index';
 
-export function createMockData() {
-    Promise.all(_.times(10, createMockAddress)).then(addresses => {
-        Promise.all(_.times(10, createMockPerson)).then(people => {
-            Promise.all(_.times(10, createMockCustomer)).then(customers => {
-                people.forEach(person => {
-                    person.setCustomer(random(customers));
-
-                    const address = random(addresses);
-                    if (address) {
-                        address.addPerson(person);
-                    }
-                });
-
-                customers.forEach(customer => {
-                    const address = random(addresses);
-                    if (address) {
-                        address.addCustomer(customer);
-                    }
-                });
-            });
+export default function createMockData() {
+    return Promise.all(_.times(10, createMockAddress)).then(addresses => {
+            return Promise.all(_.times(10, createMockPerson)).then(people => {
+                    return Promise.all(_.times(10, createMockCustomer)).then(customers => setRelations(customers, people, addresses));
+                }
+            );
         });
-    }).catch(reason => {
-        throw new Error(reason);
-    });
+
+    function setRelations(customers, people, addresses) {
+        return Promise.all(people.map(person => {
+            return person.setAddress(random(addresses)).then(_ => random(customers).addPerson(person));
+        })).then(_ => Promise.all(customers.map(customer => customer.setAddress(random(addresses)))));
+    }
 
     function createMockPerson() {
-        return Person.create({
+        return PersonEntity.create({
             salutation: Faker.name.prefix(),
             firstname: Faker.name.firstName(),
             lastname: Faker.name.lastName(),
@@ -43,7 +34,7 @@ export function createMockData() {
     }
 
     function createMockAddress() {
-        return Address.create({
+        return AddressEntity.create({
             street: Faker.address.streetAddress(),
             city: Faker.address.city(),
             zip: Faker.address.zipCode(),
@@ -52,7 +43,7 @@ export function createMockData() {
     }
 
     function createMockCustomer() {
-        return Customer.create({
+        return CustomerEntity.create({
             company: Faker.company.companyName(),
             department: Faker.company.bs(),
             website: Faker.internet.url()
@@ -60,8 +51,8 @@ export function createMockData() {
     }
 
     function random(collection) {
-        const index = Math.floor(Math.random() * collection.length);
+        const index = Math.floor(Math.random() * (collection.length - 1));
 
-        return collection[index] || null;
+        return collection[index];
     }
 }
