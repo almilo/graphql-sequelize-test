@@ -5,10 +5,10 @@ import initSchema from './graph/index';
 const APPLICATION_PORT = 3000;
 
 initSchema()
-    .then(Schema => {
+    .then(schema => {
         Express()
             .use('/graphql', GraphQLHTTP({
-                schema: Schema,
+                schema,
                 pretty: true,
                 graphiql: true
             }))
