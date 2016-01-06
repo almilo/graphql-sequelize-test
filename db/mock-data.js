@@ -7,24 +7,37 @@ import {
 } from './index';
 
 export default function createMockData() {
-    return Promise.all(_.times(10, createMockAddress)).then(addresses => {
-            return Promise.all(_.times(10, createMockPerson)).then(people => {
-                    return Promise.all(_.times(10, createMockCustomer)).then(customers => setRelations(customers, people, addresses));
-                }
-            );
-        });
+    return Promise.all([
+        Promise.all(_.times(10, createMockAddress)),
+        Promise.all(_.times(10, createMockPerson)),
+        Promise.all(_.times(10, createMockCustomer))
+    ]).then(([addresses, people, customers]) => setRelations(addresses, people, customers));
 
-    function setRelations(customers, people, addresses) {
-        return Promise.all(people.map(person => {
-            return person.setAddress(random(addresses)).then(_ => random(customers).addPerson(person));
-        })).then(_ => Promise.all(customers.map(customer => customer.setAddress(random(addresses)))));
+    function setRelations(addresses, people, customers) {
+        const allOperations = people
+            .map(assignAddressToPersonAndPersonToCustomer)
+            .concat(customers.map(assignAddressToCustomer));
+
+        return Promise.all(allOperations);
+
+        function assignAddressToPersonAndPersonToCustomer(person) {
+            return person.setAddress(random(addresses)).then(_ => {
+                random(customers).addPerson(person);
+
+                return person;
+            });
+        }
+
+        function assignAddressToCustomer(customer) {
+            return customer.setAddress(random(addresses)).then(_ => customer);
+        }
     }
 
     function createMockPerson() {
         return PersonEntity.create({
             salutation: Faker.name.prefix(),
-            firstname: Faker.name.firstName(),
-            lastname: Faker.name.lastName(),
+            firstName: Faker.name.firstName(),
+            lastName: Faker.name.lastName(),
             role: Faker.name.jobDescriptor(),
             fax: Faker.phone.phoneNumberFormat(),
             phone: Faker.phone.phoneNumberFormat(),

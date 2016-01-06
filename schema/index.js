@@ -24,8 +24,8 @@ export class SchemaFactory {
     createPersonSchema() {
         return {
             salutation: this.text(true),
-            firstname: this.text(true),
-            lastname: this.text(true),
+            firstName: this.text(true),
+            lastName: this.text(true),
             role: this.text(),
             fax: this.text(),
             phone: this.text(),
