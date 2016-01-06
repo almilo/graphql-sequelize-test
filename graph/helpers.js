@@ -51,11 +51,24 @@ function fieldsFrom(type, excludes = [], fields = {}) {
     return mergedFields;
 }
 
-export const creationOf = (type, entity, args) => ({type, args, resolve: (_, args) => entity.create(args)});
-export const mutationOf = (type, entity, args) => ({type, args, resolve: (_, args) => entity.update(args)});
-export const deletionOf = (type, entity, args) => ({
+export const creationOf = (type, entity, args, description) => ({
     type,
     args,
+    description: description || `Creation of ${entity.name} entities`,
+    resolve: (_, args) => entity.create(args)
+});
+
+export const modificationOf = (type, entity, args, description) => ({
+    type,
+    args,
+    description: description || `Modification of ${entity.name} entities`,
+    resolve: (_, args) => entity.update(args)
+});
+
+export const deletionOf = (type, entity, args, description) => ({
+    type,
+    args,
+    description: description || `Deletion of ${entity.name} entities`,
     resolve: (_, args) => entity.findById(args.id).then(instance => instance.destroy().then(_ => instance))
 });
 
@@ -63,7 +76,7 @@ export const crudOf = (type, entity, schema) => {
     const crudOperations = {};
 
     crudOperations[`create${type.name}`] = creationOf(type, entity, schema);
-    crudOperations[`update${type.name}`] = mutationOf(type, entity, schema);
+    crudOperations[`update${type.name}`] = modificationOf(type, entity, schema);
     crudOperations[`delete${type.name}`] = deletionOf(type, entity, {id: int(true)});
 
     return crudOperations;

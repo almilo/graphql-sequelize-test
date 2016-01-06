@@ -12,7 +12,8 @@ import {
 import {
     int,
     text,
-    crudOf
+    crudOf,
+    creationOf
 } from './helpers';
 import {SchemaFactory} from '../schema/index';
 
@@ -28,6 +29,28 @@ export default new GraphQLObjectType({
         {},
         crudOf(CustomerType, CustomerEntity, CustomerSchema),
         crudOf(PersonType, PersonEntity, PersonSchema),
-        crudOf(AddressType, AddressEntity, AddressSchema)
+        crudOf(AddressType, AddressEntity, AddressSchema),
+        {
+            createCustomerWithAddress: createCustomerWithAddress()
+        }
     )
 });
+
+function createCustomerWithAddress() {
+    const operation = creationOf(
+        CustomerType,
+        CustomerEntity,
+        Object.assign({}, CustomerSchema, AddressSchema),
+        'Creation of customer entities with address'
+    );
+
+    operation.resolve = (_, args) => {
+        return CustomerEntity.create(args).then(customer => {
+            return AddressEntity.create(args).then(address => {
+                return customer.setAddress(address).then(_ => customer);
+            });
+        });
+    };
+
+    return operation;
+}
