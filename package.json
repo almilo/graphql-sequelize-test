@@ -5,14 +5,15 @@
   "author": "Alberto Mijares <almilo@almilo.es>",
   "license": "MIT",
   "scripts": {
-    "start": "babel-node index.js",
-    "dev": "nodemon --exec babel-node index.js"
+    "start": "babel-node server",
+    "dev": "nodemon --exec babel-node server"
   },
   "devDependencies": {
     "babel-cli": "^6.3.17",
     "babel-preset-node5": "^10.1.2"
   },
   "dependencies": {
+    "body-parser": "^1.14.2",
     "express": "^4.13.3",
     "express-graphql": "^0.4.5",
     "faker": "^3.0.1",
