@@ -22,11 +22,17 @@ export const typeFrom = (entity, excludes = [], fields = {}) => {
 
 export const listOf = (type) => new GraphQLList(type);
 
-export const collectionOf = (type, entity) => ({
-    type: listOf(type),
-    args: defaultListArgs(),
-    resolve: resolver(entity)
-});
+export const collectionOf = (type, entity, findById = true) => {
+    const args = findById ? _.merge({}, {id: id()}, defaultListArgs()) : defaultListArgs();
+
+    return {
+        type: listOf(type),
+        args,
+        resolve: resolver(entity)
+    }
+};
+
+export const id = () => ({type: GraphQLInt});
 
 export const int = (required = false) => ({
     type: required ? new GraphQLNonNull(GraphQLInt) : GraphQLInt
