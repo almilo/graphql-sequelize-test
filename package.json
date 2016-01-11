@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "babel-node server",
-    "dev": "nodemon --exec babel-node server"
+    "dev": "node node_modules/webpack/bin/webpack --watch"
   },
   "devDependencies": {
     "babel-cli": "^6.3.17",
