@@ -11,24 +11,25 @@
   "devDependencies": {
     "babel-cli": "^6.3.17",
     "babel-core": "^6.4.0",
+    "babel-loader": "^6.2.1",
     "babel-preset-node5": "^10.1.2",
+    "css-loader": "^0.23.1",
     "expose-loader": "^0.7.1",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.8.5",
     "html-webpack-plugin": "^1.7.0",
+    "style-loader": "^0.13.0",
     "webpack": "^1.12.10",
     "webpack-dev-server": "^1.14.0"
   },
   "dependencies": {
     "angular": "^1.5.0-rc.0",
     "angular-ui-codemirror": "^0.3.0",
-    "babel-loader": "^6.2.1",
     "body-parser": "^1.14.2",
     "bootstrap": "^3.3.6",
     "codemirror": "^5.10.0",
     "codemirror-graphql": "^0.2.1",
     "cors": "^2.7.1",
-    "css-loader": "^0.23.1",
     "express": "^4.13.3",
     "express-graphql": "^0.4.5",
     "faker": "^3.0.1",
@@ -39,7 +40,6 @@
     "lodash": "^3.10.1",
     "pg": "^4.4.3",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^3.16.0",
-    "style-loader": "^0.13.0"
+    "sequelize": "^3.16.0"
   }
 }
