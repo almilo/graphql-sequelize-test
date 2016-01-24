@@ -1,6 +1,7 @@
 import path from 'path';
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import graphqlHttp from 'express-graphql';
 import initSchema from './graph/index';
 
@@ -11,6 +12,7 @@ initSchema()
         express()
             .use(express.static(path.join(__dirname, '..', 'dist')))
             .use(bodyParser.json())
+            .use(cors())
             .use('/api/graphql', graphqlHttp({schema, pretty: true, graphiql: true}))
             .listen(APPLICATION_PORT, _ => console.log('GraphQL server is now running on port:', APPLICATION_PORT));
     })
